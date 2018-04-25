@@ -1,0 +1,27 @@
+{
+  "name": "job-queue-api",
+  "version": "1.0.0",
+  "description": "a job queue whose workers fetch data from a URL and store the results in a database. The job queue should expose a REST API for adding jobs and checking their status / results.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "seed": "node scripts/seedDB.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thewillwill/job-queue-api.git"
+  },
+  "author": "William Brooks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thewillwill/job-queue-api/issues"
+  },
+  "homepage": "https://github.com/thewillwill/job-queue-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "kue": "^0.11.6",
+    "mongoose": "^5.0.16"
+  }
+}
