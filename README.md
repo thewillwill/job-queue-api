@@ -50,7 +50,7 @@ job-queue-api
 - request
 
 ## API Documention
-###Post new URL
+### Post new URL
 ```
 http://localhost:3001/api/scrapes/
 ```
@@ -66,7 +66,7 @@ Upon success a message and job id will be returned
 }
 ```
 
-###Get job status
+### Get job status
 ```
 http://localhost:3001/api/scrapes/:id
 ```
@@ -110,7 +110,9 @@ Then on starting the server these records will be processed
 
 ## Future Improvements
 - Add feature to check if URL already exists in database and return stored html without re-scraping. A flag could also be provided if the user wanted to force a re-scrape for an existing url.
-- Add /:id post route so users can re-scrape html (update stored html) for an existing ID
+- Add `/:id` post route so users can re-scrape html (update stored html) for an existing id
+- Add extra validation to Mongoose schema
+- Add version information to API
 
 ## Created By
 * [William Brooks](https://github.com/thewillwill)
