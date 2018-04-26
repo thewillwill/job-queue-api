@@ -24,7 +24,6 @@ let newJob = (id, url) => {
     .on('failed', function() {
       console.log('Job', job.data.id, 'with url', job.data.url, 'has failed');
     });
-
   job.removeOnComplete(true).save();
 }
 
@@ -32,12 +31,10 @@ let newJob = (id, url) => {
 Process jobs in the queue with the type scraper
 */
 function processJobs() {
-
   queue.process('scraper', function(job, done) {
-    //set constant to guard against accidental rewrites
-    const data = job.data;
+    const {url, id} = job.data;
     //store the the html for URL as a string
-    scrape.htmlToString(data.url, data.id, done);
+    scrape.htmlToString(url, id, done);
   });
 }
 

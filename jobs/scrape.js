@@ -10,8 +10,6 @@ let htmlToString = (url,id, done) => {
     url = 'http://' + url;
   }
 
-  console.log("starting to scrape htmlToString for url:", url);
-
   request(url, (error, response, html) => {
     //check for errors that occured when making request
     if (error) {
@@ -19,8 +17,7 @@ let htmlToString = (url,id, done) => {
       console.log();
     }
     else {
-      console.log("finished scraping done");
-      //return the html string
+      //return the html string to callback
       done(null, html);
     }
     
