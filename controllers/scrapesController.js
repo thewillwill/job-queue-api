@@ -1,4 +1,5 @@
 const db = require("../models");
+const scrapeQueue = require("../jobs/scrapeQueue");
 
 // Defining methods for the urlsController
 module.exports = {
@@ -10,37 +11,66 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
-        console.log('scrapeController - findById');
+  findById: function(id, res) {
+    console.log('scrapeController - findById');
 
     db.Scrape
-      .findById(req.params.id)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .findById(id, (err, scrape) => {
+        if (err) {
+          console.log("findByID error:", err);
+          res.status(422).json(err);
+        }
+        //check if processed;
+        (scrape.processed) ?
+          res.status(200).send({ message: "Job Complete" , html: scrape.html }):
+          res.status(200).send({ message: "Job not complete, please check back soon" });
+      })
   },
+  findUnprocessed: function(res) {
+    console.log('scrapeController - findUnprocessed');
+
+    db.Scrape
+      .find({processed: 'false'}, (err, unprocessedScrapes) => {
+        if (err) {
+          console.log("findUnprocessed error:", err);
+          res.status(422).json(err);
+        }
+        console.log('return', 'unprocessedScrapes:', unprocessedScrapes)
+        unprocessedScrapes.map(({id, url}) => scrapeQueue.newJob(id, url))
+      })
+  },  
   create: function(req, res) {
-        console.log('scrapeController - create, req:', req.body);
+    //get only the url object from the body
+    const urlReq = { "url": req.body.url };
+    console.log('scrapeController - create, url:', urlReq);
 
-    db.Scrape
-      .create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+    //store the url request to the database and return the record id
+    new db.Scrape(urlReq).save((err, scrape) => {
+      if (err) {
+        res.status(422).json(err);
+      }
+      const { id, url } = scrape;
+      //return the 'scrape job id' to the user
+      res.send({ id, message: `URL being scraped, check back soon at /scrape/${id}` });
+
+      //add the job to the scrape job queue
+      scrapeQueue.newJob(id, url);
+
+    })
+    console.log('scrapeController - create FINISHED');
   },
-  update: function(req, res) {
-        console.log('scrapeController - update');
+  update: function(id, html) {
+    //get only the url object from the body
+    console.log('scrapeController - update, id:', id);
 
-    db.Scrape
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  remove: function(req, res) {
-        console.log('scrapeController - remove');
+    //store the url request to the database and return the record id
+    db.Scrape.findByIdAndUpdate(id, { $set: { html: html, processed: true } }, (err) => {
+      if (err) {
+        console.log("Error updating:", err)
+      }
 
-    db.Scrape
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+    });
+    console.log('scrapeController - update FINISHED');
+
   }
 };

@@ -2,30 +2,28 @@ const mongoose = require("mongoose");
 const db = require("../models");
 mongoose.Promise = global.Promise;
 
-// This file empties the Scrapes collection and inserts the books below
+// This file empties the Scrapes collection and inserts the test records below
 
 mongoose.connect(
     process.env.MONGODB_URI || "mongodb://localhost/scraperdb"
 );
 
-console.log('L13')
-
-
 const scrapeSeed = [
     {
-        uuid: "1111",
         html: "",
-        date: "www.test1.com",
+        url: "www.iamwill.co",
+        processed: false
     },
     {
-        uuid: "2222",
         html: "",
-        url: "www.test2.com",
+        url: "www.google.com",
+        processed: false
+
     },
     {
-        uuid: "33333",
         html: "",
-        date: "www.test3.com",
+        url: "https://news.ycombinator.com/",
+        processed: false
     },
 
 ];
