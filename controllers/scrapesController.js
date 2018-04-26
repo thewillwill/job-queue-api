@@ -3,14 +3,6 @@ const scrapeQueue = require("../jobs/scrapeQueue");
 
 // Defining methods for the urlsController
 module.exports = {
-  findAll: function(req, res) {
-    console.log('scrapeController - findAll');
-    db.Scrape
-      .find(req.query)
-      .sort({ date: -1 })
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
   findById: function(id, res) {
     console.log('scrapeController - findById');
 
@@ -35,7 +27,6 @@ module.exports = {
           console.log("findUnprocessed error:", err);
           res.status(422).json(err);
         }
-        console.log('return', 'unprocessedScrapes:', unprocessedScrapes)
         unprocessedScrapes.map(({id, url}) => scrapeQueue.newJob(id, url))
       })
   },  
@@ -51,7 +42,7 @@ module.exports = {
       }
       const { id, url } = scrape;
       //return the 'scrape job id' to the user
-      res.send({ id, message: `URL being scraped, check back soon at /scrape/${id}` });
+      res.send({ id, message: `URL being scraped, check back soon at /api/scrapes/${id}` });
 
       //add the job to the scrape job queue
       scrapeQueue.newJob(id, url);

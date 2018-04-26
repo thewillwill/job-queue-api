@@ -23,7 +23,7 @@ mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/scraperdb"
 );
 
-//Add any unprocessed scraping requests (from the database) to the job Queue
+//Add any unprocessed scraping requests (from the database) to the job queue
 scrapesController.findUnprocessed();
 
 // Start the API server

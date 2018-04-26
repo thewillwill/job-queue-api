@@ -3,9 +3,6 @@ const scrapesController = require("../../controllers/scrapesController");
 var validator = require('validator');
 const { check, validationResult } = require('express-validator/check');
 
-// Matches with "/api/scrapes"
-router.get('/', scrapesController.findAll);
-
 //Match posts routes to /api/scrapes
 //check for valid URL
 router.post("/", [
