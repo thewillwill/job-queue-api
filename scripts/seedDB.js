@@ -8,28 +8,31 @@ mongoose.connect(
     process.env.MONGODB_URI || "mongodb://localhost/scraperdb"
 );
 
+console.log('L13')
+
+
 const scrapeSeed = [
     {
-        title: "Scrape Title 1",
-        url: "www.test1.com",
-        date: new Date(Date.now())
+        uuid: "1111",
+        html: "",
+        date: "www.test1.com",
     },
     {
-        title: "Second Scrape Sample ",
+        uuid: "2222",
+        html: "",
         url: "www.test2.com",
-        date: new Date(Date.now())
     },
     {
-        title: "Third Scrape Sample Title 1",
-        url: "www.test3.com",
-        date: new Date(Date.now())
+        uuid: "33333",
+        html: "",
+        date: "www.test3.com",
     },
 
 ];
 
 db.Scrape
     .remove({})
-    .then(() => db.Scrape.collection.insertMany(articleSeed))
+    .then(() => db.Scrape.collection.insertMany(scrapeSeed))
     .then(data => {
         console.log(data.insertedIds.length + " records inserted!");
         process.exit(0);

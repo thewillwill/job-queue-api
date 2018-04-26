@@ -1,3 +1,3 @@
 module.exports = {
-  scrape: require("./scrape")
+  Scrape: require("./scrape")
 };
