@@ -38,7 +38,6 @@ function processJobs() {
   });
 }
 
-// setInterval(()=> newJob("1", "www.google.com"), 3000);
 processJobs();
 
 module.exports = {
